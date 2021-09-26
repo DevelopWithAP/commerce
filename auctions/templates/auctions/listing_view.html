@@ -1,0 +1,97 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h4> {{ obj.title }} </h4>
+    {% if request.user.id == winner %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        Congratulations {{request.user.username}}! You are the new owner of {{ obj.title }}
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    <div class="border rounded p-2">
+        <!-- Description section -->
+        <p>Description: {{ obj.description }}
+            {% if image %}
+            {{ obj.image }}
+            {% else %}
+        <p>No image provided by user</p>
+        {% endif %}
+        </p>
+        <p>Category: {{ obj.category.display_category_name }}</p>
+        <p><strong>Starting Price: £{{ obj.price }}</strong></p>
+        <small>
+            <p> Transaction managed by: {{ obj.seller.username }} </p>
+            <p> Date posted: {{ obj.timestamp }} </p>
+        </small>
+        <!-- End of description section -->
+
+        <!-- Watchlist section -->
+        {% if request.user.id != obj.seller.id and obj.is_active %}
+            <form action="{% url 'toggle_watchlist' obj.id %}"method="POST">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-sm btn-primary outline mt-2" name="watchlist" value="Watchlist"> {% if on_watchlist %} <span>&check;</span> {% endif %}
+            </form>
+            {% if not obj.is_active %}
+                <p><strong>{{ obj.title }} is no longer available</strong></p>
+            {% endif %}
+            <!-- End of watchlist section -->
+    </div>
+        <!-- Bid section -->
+        <div class="border rounded mt-1">
+        <form action="{% url 'bid' obj.id %}" method="POST" class="mt-2 ml-2">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ bid_form }}
+            </div>
+            <input type="submit" class="btn btn-sm btn-primary mt-2 mb-1" name="bid" value="Place bid">
+            <small>{{ obj.bids.all.count }} bid(s)</small>
+        </form>
+        </div>
+        <!-- End of bid section -->
+
+        <!-- Listing availability section -->
+        {% else %}
+        {% if obj.is_active %}
+        <form action="{% url 'manage_listing' obj.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger btn-sm mt-2" name="close" value="Close Listing">
+        </form>
+        {% endif %}
+        {% endif %}
+        <!-- End of listing availability section -->
+
+        <!-- Comments section -->
+         <div class="border rounded p-2 mt-2">
+            <h5>Comments</h5>
+            <form action="{% url 'comment' obj.id %}" method="POST">
+                {% csrf_token %}
+                {{ comment_form }}
+                <input type="submit" class="btn btn-primary btn-sm mt-1" value="Comment">
+            </form>
+            <hr>
+            {% for comment in comments %}
+            <div class="border rounded p-2 m-3" style="background-color: lightgray;">
+                <h5>{{ comment.user.username }}</h5>
+                <p>{{ comment.text }}</p>
+                <hr>
+                <small>{{ comment.timestamp }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- End of comments section -->
+
+</div>
+{% endblock %}

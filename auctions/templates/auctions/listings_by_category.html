@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <h4>{{ obj.category }}</h4>
+    {% for obj in qs %}
+        <h5><a href="{% url 'listing_view' obj.id %}"> {{ obj.title }} </a></h5>
+    {% endfor %}
+</div>
+{% endblock %}

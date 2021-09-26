@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <h3>Active Listings</h3>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% for listing in listings %}
+    <div class="border rounded mt-2 mb-2">
+        <div class="m-3">
+            <h4> <a href="{% url 'listing_view' listing.id %}">{{ listing.title }}</a> </h4>
+            {% if listing.image %}
+            <div class="m-2">
+                <img src="{{ listing.image.url }}" style="width:300px; height: auto">
+            </div>
+            {% else %}
+            <p>No image available</p>
+            {% endif %}
+            <p class="m-2"> Details: {{ listing.description }}</p>
+            <p class="m-2"><strong> Current price: £{{ listing.price }} </strong> </p>
+            <hr>
+            {% if listing.is_active %}
+            <p> <small>Active since: {{ listing.timestamp }}</small></p>
+            {% else %}
+            <p> <strong>Listing no longer available</strong></p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
