@@ -57,7 +57,7 @@
                 {{ bid_form }}
             </div>
             <input type="submit" class="btn btn-sm btn-primary mt-2 mb-1" name="bid" value="Place bid">
-            <small>{{ obj.bids.all.count }} bid(s)</small>
+            <small>{{ obj.bids.all.count }} bid(s). {% if request.user.id == obj.bids.all.last.user.id %} Yours is the current bid {% endif %}</small>
         </form>
         </div>
         <!-- End of bid section -->

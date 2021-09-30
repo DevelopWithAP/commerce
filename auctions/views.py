@@ -9,6 +9,7 @@ from .models import *
 from .forms import CreateForm, BidForm, CommentForm
 
 def index(request):
+    """ Default view of the app. Lists all the available products """
     listings=Listing.objects.all()
     context={
         "listings": listings
@@ -17,6 +18,7 @@ def index(request):
 
 
 def login_view(request):
+    """ Allow users to log in """
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -37,11 +39,13 @@ def login_view(request):
 
 
 def logout_view(request):
+    """ ALlow users to log out """
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
 def register(request):
+    """ Register new users """
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -67,10 +71,9 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-""" 
-Helper function to determine if a listing is on a user's watchlist 
-"""
+
 def on_watchlist(user,listing_id):
+    """ Helper function to determine if a listing is on a user's watchlist """
     listing = Listing.objects.get(pk=listing_id)
     on_watchlist = True if (Watchlist.objects.filter(user=user, listing=listing).count()) == 1 else False    
     return on_watchlist
@@ -78,9 +81,7 @@ def on_watchlist(user,listing_id):
 
 @login_required
 def listing_view(request, listing_id):
-    """ 
-    Contains all the information of a specific listing.
-    """
+    """ Contains all the information of a specific listing. """
     listing = Listing.objects.get(pk=listing_id)
     comments = listing.comments.all().order_by("-timestamp")
     bid_form = BidForm()
@@ -94,7 +95,6 @@ def listing_view(request, listing_id):
         "winner": winner,
         "on_watchlist": on_watchlist(request.user, listing_id)
     }
-    # context.update(get_extra_context(request.user, listing_id))
     if request.method == "GET":
         return render(request, "auctions/listing_view.html", context)
             
