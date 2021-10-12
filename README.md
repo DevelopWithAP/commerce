@@ -1,5 +1,5 @@
 # Commerce
-This is my implementation of Harvard's CS50 project 2. It is an e-commerce site similar to e-Bay where users can post products,
+This is my implementation of Harvard's CS50 Web project 2. It is an e-commerce site similar to e-Bay where users can post products,
 add comments on specific products as well as add to their watchlist.
 
 ## Concepts aquired.
