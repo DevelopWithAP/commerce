@@ -9,4 +9,4 @@ add comments on specific products as well as add to their watchlist.
 * Utilised both the Admin interface as well as the shell to interact database tables.
 * Utilised OOP principles to produce cleaner implementations of certain views. 
 
-Project details can be found at (https://cs50.harvard.edu/web/2020/projects/2/commerce/)
+Project details can be found at https://cs50.harvard.edu/web/2020/projects/2/commerce/
