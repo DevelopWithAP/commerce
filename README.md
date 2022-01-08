@@ -10,3 +10,6 @@ add comments on specific products as well as add to their watchlist.
 * Utilised OOP principles to produce cleaner implementations of certain views. 
 
 Project details can be found at https://cs50.harvard.edu/web/2020/projects/2/commerce/
+
+
+Video Presentation can be found at https://www.youtube.com/watch?v=JS4KXRK2rQ0
